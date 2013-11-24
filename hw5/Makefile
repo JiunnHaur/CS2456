@@ -1,2 +1,5 @@
-all:
-	gcc timer_test.c -o timer_test
+#Makefile start
+
+obj-y := memstats.o
+
+#Makefile end
