@@ -1,0 +1,28 @@
+
+Decided to abort this block of things, the following has been recovered. 
+///////////////////////////////////////////////////////////////
+1. created prinfo.h file in the linux kernel file system.
+    include/linux/prinfo.h
+2. add function nubmer to
+qqiu/QDGL/linux-2.6.26.5/include/asm-x86/unistd_32.h
+the function call is named 
+///////////////////////////////////////////////////////////////
+
+starting out:
+change the name from makefile to Makefile
+
+succeeded
+
+change i386 to x86
+
+./qemu/bin/qemu -m 64M -L ./qemu/share/qemu/ -hda hda.img -nographic -append "root=/dev/hda1 console=ttyS0,115200n8 console=tty0" -kernel linux-2.6.26.5/arch/i386/boot/bzImage
+
+
+used this same procedure found here http://www.cs.rochester.edu/~sandhya/csc256/ 
+added a mysyscall.c to the linux kernel
+
+----------------------------------------
+add a structure in the linux kernel at include/linux/prinfo.h
+
+made a copy of hda.img file this way we do not need to create the user file again and again
+

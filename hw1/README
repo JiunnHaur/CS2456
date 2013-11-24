@@ -1,0 +1,13 @@
+1.name of two executables
+part_one
+part_two
+2.special compiling insructions
+None
+
+
+Test cases:
+Any pipe line works perfectly as long as it does no have a '&' at the end.
+	eg1: ls -l | sort -d +4 | cat | wc
+	eg2: 
+fg / bg is not wokring (- -). This is because child processes in the pipeline cannot be assigned different groupid. Therefore catching signals from user as well.
+

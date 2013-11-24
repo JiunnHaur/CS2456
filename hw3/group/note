@@ -1,0 +1,75 @@
+implement kernel synchronization pritmitive
+
+Linux Kernel Development 
+    Kernel Synchronization
+
+NO owners 
+    anybody can unlock anylock
+NOT recursive 
+    (should never acquire the same lock twice)
+
+design requirement
+    processes blocking for an event
+    processes block until some process signals the event
+
+int doevent_open(); 
+    Creates a new event, returning event ID on success, -1 on failure.
+
+int doevent_close(int eventID); 
+    Destroy the event with the given event ID and signal any processes 
+    waiting on the event to leave the event. Return number of processes
+    signaled on success and -1 on failure.
+
+int doevent_wait(int eventID); 
+    Blocks process until the event is signaled.
+    Return 1 on success and -1 on failure.
+
+int doevent_sig(int eventID); 
+    Unblocks all waiting processes; ignored if no processes are blocked. 
+    Return number of processes signaled on success and -1 on failure
+
+int doevent_init()
+    change system initialization code to call this function
+
+Need to change Makefile <---- just like the previous homework 
+
+Having multiple events open at the same time
+    a list of event descriptor data structures
+        each data structure identifies an event
+        dynamically allocated space
+            kmalloc()
+            kfree()
+    provided functions
+        interruptible_sleep_on()
+        sleep_on()
+        wake_up()
+        wake_up_interruptible()
+Synchronize??
+    can we use spinlock to make sure to do this again??
+    no assumption of single / multicore system
+
+!!!Write a user-level program to test your new kernel functions.
+    demonstrate that each kernel call of the doevent work
+    one process waiting
+    boundary conditions
+        no tasks waiting when doevent_sig() is called
+        multiple tasks waiting when doevent_sig() is called
+        multiple events open at one time and doevent_close()
+            is called
+
+when talking about a race condition,
+there is always a version of code you are talking about.
+base on that code, some race condition can happen. 
+therefore your correction should base on that wrong version.
+
+We use list to maintail all events. 
+
+
+Every one in the race condition should check and see if the count in that event is zero or not. The reason being anyone in the race queue has the 
+chance to be the last one to makge change to that event. Therefore even the 
+doevent_close(event id) funciton should have some code in the body to check
+event.count to see if it is 0. So that if it is the last one, it should also
+free the memeory that has been allocated for that event it is trying to close.
+
+What will the syscall() return ?
+    it will return the value returned by your implementation

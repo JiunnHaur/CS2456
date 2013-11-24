@@ -1,0 +1,17 @@
+kersync
+    is the directory for all the system calls named
+        doevent_close(int eventID);
+        doevent_wait(int eventID);
+        doevent_sig(int eventID);
+        doevent_init();
+
+main.c
+    we add doevent_init(); into the start_kernel() function
+    init will initialize our global variables
+
+syscall_table_32.S
+    we add function call pointer in this table
+
+unistd_32.h
+    we add funciton call to this system call table 
+

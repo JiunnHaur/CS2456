@@ -1,0 +1,208 @@
+//The most important thing for any synchronization problem to understand first is
+//that if some variable x is updated by only one thread / process at a time, the 
+//update operation is always good. Atomic operation to shared resources will gurantee
+//a desired outcome. Instead of data being updated wrongly. 
+
+get the source for SThreads
+
+SThread is a library
+These functions are given in teh sthread.h/c files.
+We do not need to touch anything in this header file;
+we do not touch anything in the source file (sthread.c) either. 
+sthread.h
+    sthread_t
+        a structure for the thread object
+    sthread_init() 
+        should be called once and only once. -1 is init fail
+    int sthread_create(sthread_t *t, sthread_main_t main, void *arg)
+        pointer to the sthread
+        function for that thread
+        arguments for that thread
+    sthread_self() 
+    sthread_suspend() 
+        will suspend caller thread
+        does suspend() suspend a thread make it not in running state?
+            sthread_suspend() will make a thread stop running at some line
+            it will continue running from that line after being woken up.
+    sthread_wake(sthread_t *t) 
+        wake up and suspending it in a running state???
+        what is a running state? does a thread wake in to a running state?
+            test_and_set(int *x)
+        atomic operation set the thing pointed by x (a pointer) to value 1. 
+
+We need to implement locking primitives. 
+do NOT change sthread.c 
+do NOT change sthread.h
+    this lock system itself should NOT use spinlock machnism. 
+        instead, USE the function sthread_wake() / sthread_suspend()
+        to implement the mutual exclusive
+    but part of its operations use spinlock to
+    update some variables in some data structure 
+    shared among all sthread objects. 
+    //it is the lock struct that is shared among all sthreads that are trying
+    to acquire it.
+
+Do we need to implement the locking primitives using spinlock mechnism?
+    NO, spinlock mechnism is used to update some shared structures among 
+    thread objects or locks???. 
+What is a spinlock? what does this spinlock do?
+    spinlock is implemented by the offered test_and_set(*Memlocation) 
+    function.
+    it is one way to gurantee mutual exclusive access to some variable.
+Why the following would be an issue?
+    (correction: the following is not an issue but rather an requirement)
+        "In other words, if I call sthread_mutex_lock() on
+        an unavailable mutex, I should suspend rather than
+        spin until the lock is released. "
+            First of all what is sthread_mutex_lock()? what does it do???
+                the sthread_mutex_lock() is the function to acquire a lock
+                it acquires some specified lock passed to this function
+            Second, what does sthread_suspend() here do?
+            If I were suspended, when to be woken up?
+                because once a thread is woken up this thread will continue
+                from the point it calls sthread_suspend(), the thread will
+                execute its critical section right after it is woken up.
+                we should gurantee that at that time there is one and only
+                ont paticular thread is woken up. 
+                we should also gurantee that when thread gives back the lock 
+                we can wake up others. 
+
+Design requirement:
+    We are NOT implementing the lock itself by spinlock 
+    We are implementing the lock base on the wait()/suspend() mechenism
+        these wait() and suspend() are provided in the given sthread.h
+        header file
+    When implementing the lock primitive for this sthread library, 
+        use spinlock to update anything (typically the lock struct)
+        that is shared among all threads???.
+
+Implement my function in the following file
+    sync.c
+my structure should be defined in the following file
+    sync.h
+skeleton for the above two files are provided (checked?).
+
+In order to achieve the above design requirement, we need to implement five functions
+    sthread_mutex_init()
+    sthread_mutex_destroy()
+    sthread_mutex_lock()
+        if lock available 
+                get lock
+        else
+                suspend thread until lock available
+                lock struct will wake designate 
+                thread up and let it continue running
+                the rest of its code
+    sthread_mutex_unlock()
+        make the lock available
+    sthread_mutex_trylock()
+        if lock available
+            get lock and return 0
+        else
+            return non-zero does not block caller
+            what does the block here mean? does it mean spin waiting?
+My implementation for these functions should be recursive
+    if lock holder try to hold the same lock again, should unlock the memory location
+    and do other stuff. i.e. owner of lock unlocks to the outest level and do things.
+My implementation should not allow starvation fo any thread???
+    how to gurantee this??
+    is this in the writing homework?
+    what should I do to gurantee this?
+
+define 
+    struct sthread_mutex_struct
+
+---------------------------------------------------------------------
+struct sthread_mutex_struct {
+    /* FILL ME IN! */
+    int M; //should be initialized to 0; Means lock availalbe
+    queue Q;
+};
+//This is just the psudocode
+//we should implement the queue manually
+---------------------------------------------------------------------
+
+
+sthread_mutex_lock(sthread_mutex_t *mutex )
+{
+    //fighting for the right to modify Q
+    while(test_and_set(M) == 1){}    
+    //after this we are now the only one 
+    //to modify the sthread_mutex_t struct mutex
+    //therefore go ahead and modify the lock
+
+    //check if the Q is empty
+    if(empty(Q))
+        //Empty means I (this thread) can safely go into critical section
+        //because no one is before me
+        put myself in Q
+        M = 0 // others can now go see the new Q
+        //will go into critical section
+    else
+        //there are someone before me
+        //either sleeping (he is not the 1st)
+        //or in the critical section now (he is the 1st and I am the 2nd in Q)
+        //either way I should sleep
+        if(that someone is me)
+            increament the count to Q at my task ( and I am the first one)
+            just keep going into criticle section
+            M = 0; // others can now go see the Q for I am done with it.
+        else
+            put myself in Q
+            M = 0 // others can now go see the new Q for I am done with Q
+            suspend()
+}
+
+//previously I have an solution that everybody will suspend() and 
+//the result is no one can enter criticle section
+//this version solves this problem by letting the one
+//who is now seeing the Q and found it empty to go into 
+//criticle section
+
+sthread_mutex_unlock(SThreads_mutex_t *mutex)
+{
+    //fighting for the right to modify Q
+    while(test_and_set(M) == 1){} 
+    if(Q.first.count == 1)
+        Remove the first element in Q (This case is myself)
+        if(empty(Q))
+            Do_nothing;
+        else
+            //There are people behind me sleeping
+            //wake up the current first one in the Q
+            sthread_wake(Q.first)
+    else if(Q.first.count >1)
+        Q.first.count--;
+    else 
+        error
+}
+Why unlock also need to fight for the right to modify Q?
+Example when Q has only exactly one member name it x.
+Now imagine another one p comes in just before x removes itself
+from Q. p did see there is someone in the Q (whom he saw was x) 
+therefore it goes to sleep. 
+Just right before p put himself in the Q, x comes out of the 
+criticle section and did not see p in the Q so x just does 
+nothing and exits without waking up p. 
+This way, p never gets to be woken up.
+
+This Q will never be emptied out. for now no one will be woken up
+because there is now everybody is sleeping.
+
+
+Recursive, if an onwer of a lock calls the lock again
+    just add up the counter.
+    only when the counter reaches 0 will the Q pop the thread out.
+-------------------------------------------------------------------------------------
+Error handling
+    #include <errno.h>
+    if( some_term )
+        prinf("success\n");
+    else
+        printf("ERROR: %s\n\",strerror(errno));
+-------------------------------------------------------------------------------------
+SThread_qqy_v0 is the version that has two bugs
+SThread_qqy_v1 is the version that has the two bugs fixed // please look at note int dir
+//TODO
+prevent a thread to unlock other threads' lock
+    this should be done in the sthread_mutex_unlock() function

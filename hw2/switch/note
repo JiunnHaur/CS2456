@@ -1,0 +1,17 @@
+1. for the switch time. let assume the cpu work on parent first, after the parent write to the pipe1, parent is blocked at read();
+then the child can read out the content from pipe1.
+
+the context switch from parent from child has to be finished before this child process can read anything from the pipe1.
+
+name the time when parent finished write the message to pipe1 p_write_finish; the time when child is read to read from the pipe1 c_read_ready
+
+therefore, the first context time should be the differece of these two times
+
+time_context_switch = p_write_finish - c_read_ready;
+
+This same context process happens when the parent reads back msg from the child a second time. 
+
+2.
+flags like O_CREAT, O_RDWR are defined in <fcntl.h> library
+
+errno and strerrno(errno) is defnied in <errno.h> library

@@ -1,0 +1,22 @@
+Names of executable file
+min_func    //for miniumn function call
+min_syscall // For minimum system call
+switch  //For the context switch time
+
+Individual part
+Problem #1:
+    source path: /min_func/min_func.c
+    executable file name: min_func
+    Explanation: foo() is an empty function that does nothing. It is run 1000 times. The total time for this 1000 iteration was measured.
+
+Problem #2:
+    source path: /min_syscall/min_syscal.c
+    excutable file name: min_syscall
+    Explantion: getpid() is run 1000 times. Total time for this 1000 iteration was taken down. 
+
+Problem #3:
+    source path: /switch/switch.c
+    excutable file name: switch
+    Explanation: Creats two pipes. One from parent to child the other from child to parent. Time interval is measured when parent is done writing and child is done reading. There is another context switch happening when child is done writing and parent is done reading. 
+    I measured the entire process, which includes two read/write operation.Then therefore my total time is divided by 2 before it is sent to the terminal.
+

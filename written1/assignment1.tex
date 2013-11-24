@@ -1,0 +1,512 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Structured General Purpose Assignment
+% LaTeX Template
+%
+% This template has been downloaded from:
+% http://www.latextemplates.com
+%
+% Original author:
+% Ted Pavlic (http://www.tedpavlic.com)
+%
+% Note:
+% The \lipsum[#] commands throughout this template generate dummy text
+% to fill the template out. These commands should all be removed when 
+% writing assignment content.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass{article}
+
+
+\usepackage{listings}
+\lstset{ 
+        language=Matlab,                                % choose the language of the code
+%       basicstyle=10pt,                                % the size of the fonts that are used for the code
+        %numbers=left,                                   % where to put the line-numbers
+        %numberstyle=\footnotesize,                      % the size of the fonts that are used for the line-numbers
+        %stepnumber=5,                                           % the step between two line-numbers. If it's 1 each line will be numbered
+        %numbersep=5pt,                                  % how far the line-numbers are from the code
+		%backgroundcolor=\color{light-gray},          % choose the background color. You must add \usepackage{color}
+        showspaces=false,                               % show spaces adding particular underscores
+        showstringspaces=false,                         % underline spaces within strings
+        showtabs=false,                                         % show tabs within strings adding particular underscores
+%       frame=single,                                           % adds a frame around the code
+%       tabsize=2,                                              % sets default tabsize to 2 spaces
+%       captionpos=b,                                           % sets the caption-position to bottom
+        breaklines=true,                                        % sets automatic line breaking
+        breakatwhitespace=false,                        % sets if automatic breaks should only happen at whitespace
+        escapeinside={\%*}{*)},                          % if you want to add a comment within your code
+        xleftmargin=.50in
+}
+\usepackage{color}
+\usepackage{fancyhdr} % Required for custom headers
+\usepackage{lastpage} % Required to determine the last page for the footer
+\usepackage{extramarks} % Required for headers and footers
+\usepackage{graphicx} % Required to insert images
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+% Margins
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in 
+
+\linespread{1.1} % Line spacing
+
+% Set up the header and footer
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName} % Top left header
+\chead{\hmwkClass\ \hmwkTitle} % Top center header
+\rhead{\firstxmark} % Top right header
+\lfoot{\lastxmark} % Bottom left footer
+\cfoot{} % Bottom center footer
+\rfoot{Page\ \thepage\ of\ \pageref{LastPage}} % Bottom right footer
+\renewcommand\headrulewidth{0.4pt} % Size of the header rule
+\renewcommand\footrulewidth{0.4pt} % Size of the footer rule
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT STRUCTURE COMMANDS
+%	Skip this unless you know what you're doing
+%----------------------------------------------------------------------------------------
+
+% Header and footer for when a page split occurs within a problem environment
+\newcommand{\enterProblemHeader}[1]{
+\nobreak\extramarks{#1}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+}
+
+% Header and footer for when a page split occurs between problem environments
+\newcommand{\exitProblemHeader}[1]{
+\nobreak\extramarks{#1 (continued)}{#1 continued on next page\ldots}\nobreak
+\nobreak\extramarks{#1}{}\nobreak
+}
+
+\setcounter{secnumdepth}{0} % Removes default section numbers
+\newcounter{homeworkProblemCounter} % Creates a counter to keep track of the number of problems
+
+\newcommand{\homeworkProblemName}{}
+\newenvironment{homeworkProblem}[1][Problem \arabic{homeworkProblemCounter}]{ % Makes a new environment called homeworkProblem which takes 1 argument (custom name) but the default is "Problem #"
+\stepcounter{homeworkProblemCounter} % Increase counter for number of problems
+\renewcommand{\homeworkProblemName}{#1} % Assign \homeworkProblemName the name of the problem
+\section{\homeworkProblemName} % Make a section in the document with the custom problem count
+\enterProblemHeader{\homeworkProblemName} % Header and footer within the environment
+}{
+\exitProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+
+\newcommand{\problemAnswer}[1]{ % Defines the problem answer command with the content as the only argument
+\noindent\framebox[\columnwidth][c]{\begin{minipage}{0.98\columnwidth}#1\end{minipage}} % Makes the box around the problem answer and puts the content inside
+}
+
+\newcommand{\homeworkSectionName}{}
+\newenvironment{homeworkSection}[1]{ % New environment for sections within homework problems, takes 1 argument - the name of the section
+\renewcommand{\homeworkSectionName}{#1} % Assign \homeworkSectionName to the name of the section from the environment argument
+\subsection{\homeworkSectionName} % Make a subsection with the custom name of the subsection
+\enterProblemHeader{\homeworkProblemName\ [\homeworkSectionName]} % Header and footer within the environment
+}{
+\enterProblemHeader{\homeworkProblemName} % Header and footer after the environment
+}
+   
+%----------------------------------------------------------------------------------------
+%	NAME AND CLASS SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\hmwkTitle}{Assignment\ 1} % Assignment title
+\newcommand{\hmwkDueDate}{Tue,\ Oct.\ 1,\ 2013} % Due date
+\newcommand{\hmwkClass}{CS\ 444} % Course/class
+\newcommand{\hmwkClassTime}{} % Class/lecture time
+\newcommand{\hmwkClassInstructor}{} % Teacher/lecturer
+\newcommand{\hmwkAuthorName}{Qiyuan Qiu} % Your name
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+\title{
+\vspace{2in}
+\textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+\normalsize\vspace{0.1in}\small{Due\ on\ \hmwkDueDate}\\
+\vspace{0.1in}\large{\textit{\hmwkClassInstructor\ \hmwkClassTime}}
+\vspace{3in}
+}
+
+\author{\textbf{\hmwkAuthorName}}
+\date{} % Insert date here if you want it to appear below your name
+
+%----------------------------------------------------------------------------------------
+
+\begin{document}
+
+\maketitle
+
+%----------------------------------------------------------------------------------------
+%	TABLE OF CONTENTS
+%----------------------------------------------------------------------------------------
+
+%\setcounter{tocdepth}{1} % Uncomment this line if you don't want subsections listed in the ToC
+
+%\newpage
+%\tableofcontents
+
+\newpage
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\begin{homeworkProblem}
+\vspace{10pt} % Question
+
+\begin{homeworkSection}
+{a) What is the relationship of the  excerpt from Steven Pinker with knowledge reprensentation and reasoning? Why / How?}
+\problemAnswer{
+	Steven Pinker what really sets human apart from other animals is the the mental part. This mental part gives human beings advantages which enable them to outbit other animals even that human beings are usually physically inferior in terms of power, body size etc..  \\
+
+	Pinker believes that the only theory explains what human's ingenuity is good for is given by John Tooby and Irven DeVore. They conclud that human has reached a "congnitive niche". Which means that human use knowledge to achieve goals and avoid obstacles in the way. This ability enables human outwith other species because others can only respon in a speed of evolution. This ingenuity is not hard coded into human mind but rather developed by interacting with the objects in the wrold they live in. Human acquire new knowledge by imagining things in their mind. \\
+
+	For instance, foragers show ingenuity reasoning skills when they are trying to hunt animals. They can reason from the footprint to tell where the animals might be headed to. They communicate knowledge through languages. Language, by the way, is a perfect way of knowledge communicating tool because it makes exchanging experiece possible at a very low price. \\
+	
+	Tool making is also an evidence of reasoning because in order to make tools. Human need to figure out the cause and effect relationship.\\
+	
+	The importance of knowledge lies in the fact that it could be applied else where with a similar habitat environment at a very low price. Without this knowledge representation mechenism (language, sentences, logic etc.), human will have to do everything from scratch. There would be little advancement in all sepects of human evolution.}
+\end{homeworkSection}
+
+\begin{homeworkSection}
+{b) Estimate how many facts you know that can be readily expressed in words.}
+\problemAnswer{
+I am deploying the first approach.\\
+We spend most of our time acquiring knowledges during classes. \\
+On average, there are two classes per day. \\
+For each class, there are usually two topics covered in one lecture. \\
+For each topic, lest assume there are five facts we need to know about. \\
+
+Therefore, for each day, the number of facts we learn in a typical day is: 
+\begin{center}
+$
+	\# of facts = 5*2*2 = 20 
+$
+\end{center}
+
+I have lived 8522 days, therefore I have roughly leanred 
+\begin{center}
+$
+20*3 = 60
+$
+\end{center}
+
+Based on the test I can remember almost 60\% of the content in the past three days, 
+\begin{center}
+$
+60*60\% = 36
+$
+\end{center}
+
+}
+\end{homeworkSection}
+
+\end{homeworkProblem}
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 2
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\begin{homeworkProblem}
+\vspace{10pt} % Question
+A well formed formular (wff) is a sentence contains no "free" variables. All freen variables are "bound" by universal or existential quantifiers.\\
+\problemAnswer{
+$
+(iii) \ Loves(Chelsea, Hillary \wedge Bill)  \\
+$
+This is wrong, bacuse according to BNF rules, there is no form as term $\wedge$ term inside a term.
+\\
+
+$
+(vii) \ \forall x. \exists y. \ P(x,y,z) \\ 
+$
+This is wrong because for a <formula>, if there are variables, there should be a quantifier associated with it. However here, the <variable> z is not associated with any quantifier. Therefore this is not a valid FOL formula.
+}
+
+
+\end{homeworkProblem}
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 3
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\begin{homeworkProblem}
+
+\begin{homeworkSection}{(a)}
+
+\problemAnswer{ 
+(i)There is an ocean beneth the surface of Europa. \\
+$ (\exists x) \ ocean(x) \wedge beneth(x, surface-of(Europa)) $ \\
+
+(ii) Every planet orbits some star. \\
+$
+\forall x ,\exists y \ planet(x) \wedge star(y) \Rightarrow Obits(x,y)
+$
+\\
+
+(iii) A dromedary has one and only one hump. \\
+$ (\forall x \ dromedary(x) \wedge (\forall y) Hump(y) \wedge Has-as-part(x, y) ) \Rightarrow ( (\forall z)Hump(z) \Rightarrow (z = y))$\\
+
+(iv) Every elephant has exactly two tusks.\\
+$
+(\forall x \ elephant(x)) \Rightarrow (\exists y1, \exists y2 \ Tusks(y1) \wedge Tusks(y2) \wedge \neg (y1 = y2) \Rightarrow \\ (\forall z \ Tusks(z) \Rightarrow ( (z=y1) \vee (z=y2) )))
+$
+\\
+
+(v) An (undirected) graph is strongly connected if and only if for every two distinct vertices of the graph, there is an edge joining the two vertices( Undir-Graph, Strongly-Connected, Vertex-of, Edge-of)\\
+$
+(\forall g \ Strong-connected(g) \wedge Undirected-graph(g)) \Leftrightarrow (\forall x, \forall y \ \neg (x = y) \wedge Vertex-of(g,x) \wedge Vertex-of(g,y) \wedge \exists z Edge-of(g,z) \Rightarrow (vertex-of(z,x) \wedge vertex-of(z,y)))
+$
+\\
+
+(vi) People will fly to Mars one day.\\
+$
+(\exists y) Fly-to-Mars(y) \wedge People(y)
+$
+\\
+
+(vii) An ancestor of a person is defined as a person who is a parent, or an ancester of a parent of that person.
+$
+\forall x person(x) \Rightarrow (ancester(x) = (parent(x) \vee ancester(parent(x))))
+$
+\\
+
+(viii) Every politician can fool some people all of the time. \\
+$
+\exists x, \forall t person(x) \wedge time(t) \Rightarrow can-fool(x,t)
+$
+
+$
+\exists x, \forall t polititian(x) \wedge time(t) \Rightarrow can-fool(x,t)
+$
+}
+\end{homeworkSection}
+
+\begin{homeworkSection}{(b)}
+\problemAnswer{
+a. Few dosg are vicious. \\
+$
+\forall x \ dogs(x) \Rightarrow vicious(x) ;; Wrong \\
+$
+The difficulty mainly is that we do not know how many is "few". There is no quantifier in the FOL that describes the concept of "few".
+\\
+
+b. Jack has visited India 10 times. \\
+$
+\exists x \ Jack(x) \Rightarrow visit-india(x) \\ 
+$
+The problem is that in FOL, there is no conept that can deal with time. We can only say someting that is always true or false. 
+\\
+
+c. Mary suspects John loves her. \\
+$
+\exists x, \exists y \ \wedge John(x) \wedge Mary(y) \Rightarrow loves(x,y) \\
+$
+The problem with the above statement is that it does not show suspects. It is a "static" statement. 
+\\
+
+d. Red hair is actually copper-colored.\\
+$
+\forall x \  hair(x) \wedge  Red(x) = copper-colored(x) 
+$
+\\
+
+e. A colloquium scheduled for Oct.14/13 has been cancelled. \\
+$
+\exists x \ colloquium(x) \wedge on-Oct14/13(x) \Rightarrow Cancelled(x)  
+$
+\\
+
+f. Mosquitoes are widespread. \\
+$
+\forall x \ mosquitoes(x) \Rightarrow widespread(x) 
+$
+\\
+
+g. Coping a book is forbidden. \\
+$
+\forall x \ book(x) \Rightarrow \neg copy(x) 
+$
+\\
+
+h. Jack resembles a Wookiee. \\
+$
+\forall x \ Jack(x) = wookie(x)
+$
+\\
+
+i. Jack nearly had an accident today.
+\\
+
+j.Perhaps the cosmos exists now because it has always existed.
+
+}
+\end{homeworkSection}
+
+\end{homeworkProblem}
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 4
+%----------------------------------------------------------------------------------------
+
+% To have just one problem per page, simply put a \clearpage after each problem
+
+\begin{homeworkProblem}
+\begin{homeworkSection}
+{(a)}
+
+\problemAnswer{
+The model $M$ is the following,
+\begin{center}
+$D = \{a, b, c\}$ \\
+$A^I = a$ \\
+$B^I = b$ \\
+$P^I = \{a\} $ \\ 
+$Q^I = \{a\}$
+\end{center}
+
+There are A,B,C, therefore let D be the set of a,b,c. \\
+Because P(A) is true, therefore a must be in D. \\
+Because $\neg Q(B)$ is true, Q(B) is false, therefore b is in Q.  \\
+Because $\forall x. \ P(x) \Rightarrow Q(x)$, let x=A, P(A) is true, therefore Q(A) must be true. Which means that A is in set Q.  \\
+According to $\neg Q(A) \vee \neg Q(C)$, we can tell that $\neg Q(A)$ is false, then $\neg Q(C)$ has to be true. That means C is not in the set of Q.
+}
+\end{homeworkSection}
+
+\begin{homeworkSection}
+{(b)}
+\problemAnswer{
+\begin{center}
+$D = \{a,b,c,d\}$ \\
+$A^I = a$ \\
+$B^I = b$ \\
+$P^I = d$ \\
+$Q^I = \{a,b,c\}$ \\
+\end{center}
+
+For this $M'$ model. Those for formular can be turned into new ones like the following: 
+\begin{center}
+$
+\neg P(A)  \ \ \ \ \ Q(B) \ \ \ \ \ Q(A) \wedge Q(C)  \ \ \ \ \  \exists P(x) \Rightarrow \neg Q(x)
+$
+\end{center}
+}
+\end{homeworkSection}
+
+\begin{homeworkSection}
+{(c)}
+\problemAnswer{
+$<individual constant> ::= Triangle \ | \ Circle$ \\
+$<predicate constant> ::= Inside$ \\
+$<binary connectie> ::= \wedge $  \\
+$<formula> ::= <predicate constant>(<individual constant><individual constant>)$ \\
+
+With the above definition, the picture could be described as the following: \\
+$Inside(Triangle, Circle) \wedge Inside(Circle, Triangle)$
+
+}
+\end{homeworkSection}
+
+\begin{homeworkSection}
+{(d) Prove that $\models (\forall x \ \phi [U]) $ iff $\models(\neg \exists x \ \neg \phi)[U]$ }
+\problemAnswer{
+For any model $M$ \\ 
+$\models_{M} (\forall x \ \phi [U]) $ iff for all $ \delta \in D$ , $\models_{M}  (\neg \exists x \ \neg \phi)[U_{x:\delta}]$ \\
+Notice that for $(\forall x \ \phi) \Leftrightarrow (\neg \exists x \ \neg \phi) $ is true for regardless of $M$ and variable assignment $[U]$.  Therefore this is true for all $U$.
+}
+\end{homeworkSection}
+
+\begin{homeworkSection}
+{(e) Prove $\models_{M} \neg (\phi \Rightarrow \psi) [U]$ iff $\models_{M} (\phi \wedge \neg \psi)[U]$
+}
+\problemAnswer{
+For this to be true, we need to prove that $\neg (\phi \Rightarrow \psi)$ iff $(\phi \wedge \neg \psi)$ \\
+Because $(\phi \Rightarrow \psi) = (\neg \phi \vee \psi)$ \\
+Therefor $\neg (\phi \Rightarrow \psi)$ = $(\phi \wedge \neg \psi)$
+
+}
+
+\begin{homeworkSection}
+{(f)
+Prove that $\models_{M} (x=A \wedge P(x))[U]$ iff $\models_{M} (x=A \wedge P(A))[U]$
+}
+
+\problemAnswer{
+On one hand, for varialbe assignment $x=A$\\
+$(x=A \wedge P(x))$ $\Rightarrow$ $(x=A \wedge P(A))$ \\
+On the other hand, $P(A)$ is true and with the fact that $x=A$ $P(x)$ is as true as $P(A)$\\
+$(x=A \wedge P(A))$ $\Rightarrow$ $(x=A \wedge P(x))$ \\
+Therefore,\\
+$(x=A \wedge P(x))$ iff $(x=A \wedge P(A))$
+}
+
+\end{homeworkSection}
+
+\end{homeworkSection}
+
+
+\end{homeworkProblem}
+
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 5
+%----------------------------------------------------------------------------------------
+
+\begin{homeworkProblem}
+\begin{homeworkSection}
+{(a)}
+
+\problemAnswer{
+(ii) Zod = Zod is valid \\
+Because to satisfy validity,  $(\forall x \ (x = x)).$
+Zod is some constant, is a special case for varialble x. Therefore this is valid for all model M.
+\\
+
+(iii)$\exists x. \ x = x$ is valid \\
+Because to satisfy validity,  $(\forall x \ (x = x)).$
+Some x is a special case for the above formula with regard to all possible model M. Therefore this is valid.
+}
+\end{homeworkSection}
+
+\begin{homeworkSection}
+{(b)}
+\problemAnswer{
+(i) 
+This holds. Because $P(A) \wedge A=B \Rightarrow P(A)=P(B)$. This is true for any M. This means that whenever all formulars in \{P(A), A=B\} are true in some model M, so is P(B) true. 
+\\
+
+(ii)
+This holds because if $\forall x \ P(x)$ for any constant A there must be P(A). This entailment relationship always exists because for any modle M. Whenever all formulars in  $\forall x \ P(x)$ are ture in some M, so is $P(A)$ true. 
+\\
+
+(iii)
+This holds because if P(A) is true then we know there must be at least an variable assignmnt$ {U_{x:a}}$ satisfies some model M. Therefore $\exists x \ P(x)$ is true. This means that whenever all formulars in P(A) is true in some model M, so is $\exists x \ P(x)$ true in that model. 
+\\
+
+(iv)
+This holds because $\neg \exists x \neg \phi \Leftrightarrow \forall x \phi$ Therefore this formular is true in all models. This formular is valid. Therefore this entailment holds.
+
+}
+\end{homeworkSection}
+
+\end{homeworkProblem}
+
+
+\end{document}

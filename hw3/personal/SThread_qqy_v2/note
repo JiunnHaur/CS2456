@@ -1,0 +1,34 @@
+Bugs
+1.
+first bug is that when I push something into the queue, I set the counter to 0.
+the right number should be 1.
+
+in the function Q_push(pQ, ptr_thread)
+after I push this thing into the queue, 
+I set the value in memeber with count = 0,
+this intial value of count should be 1. 
+The reason for it to be 1 is that this 
+count means how many times this thread 
+has acquire the same lock. The sthread_mutex_unlock()
+function also read this count value to 
+determine when to use Q_pop() to pop
+an element out of the Q structure in mutex.
+This count has to have an initial value set
+to 1 because this default value is an
+agreenment between it and other function
+that does things rely on this particular 
+initial value.
+
+2.
+the second bug
+is that in the sthread_mutex_unlock()
+after I have get the right to modify M
+I did not puthe right back hence blokcing others from looking at Q
+
+the above is equivalent to saying
+
+afater the 
+    while(test_and_set(&mutex->M) == 1){}
+if you have finished modifying the Q structure in mutex
+should release this spinlock by
+    mutex->M = 0;

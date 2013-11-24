@@ -1,0 +1,186 @@
+implement kernel synchronization pritmitive
+in order to synchronize processes
+
+Linux Kernel Development 
+    Kernel Synchronization
+    semaphore down and up
+    NO owners 
+        anybody can unlock anylock
+    NOT recursive 
+        (should never acquire the same lock twice)
+
+Design requirement
+    processes blocking for an event
+    processes block until some process signals the event
+
+int doevent_open(); 
+    Creates a new event, returning event ID on success, -1 on failure.
+
+int doevent_close(int eventID); 
+    Destroy the event with the given event ID and signal any processes 
+    waiting on the event to leave the event. Return number of processes
+    signaled on success and -1 on failure.
+
+int doevent_wait(int eventID); 
+    Blocks process until the event is signaled.
+    Return 1 on success and -1 on failure.
+    Processes are waiting for events 
+
+int doevent_sig(int eventID); 
+    Unblocks all waiting processes; ignored if no processes are blocked. 
+    Return number of processes signaled on success and -1 on failure
+    Event are signaled by processes
+    //How to block / wake up a process
+    //What function do I use to block / wake up a process?
+
+int doevent_init()
+    change system initialization code to call this function
+    when system is booted, this should be called
+
+Need to change Makefile <---- just like the previous homework 
+
+Having multiple events open at the same time
+    a list of event descriptor 
+        code should be able to extract events
+        each data structure identifies an event
+        How are we going to wait?
+        How are we going to wake?
+    dynamically allocated space
+        kmalloc()
+        kfree()
+
+Provided functions
+    interruptible_sleep_on()
+    sleep_on()
+    wake_up()
+    wake_up_interruptible()
+
+Synchronize??
+    can we use spinlock to make sure to do this again??
+    no assumption of single / multicore system
+
+!!!Write a user-level program to test your new kernel functions.
+    demonstrate that each kernel call of the doevent work
+    one process waiting
+    boundary conditions
+        no tasks waiting when doevent_sig() is called
+        multiple tasks waiting when doevent_sig() is called
+        multiple events open at one time and doevent_close()
+            is called
+
+----------------------------------------------------------------------------
+10/17/2013
+might need to tune the QEMU setting. 
+after the Fedora 19 upgrade
+
+free() can only free the memory allocate by malloc()
+
+Otherwise there would be segmentation fault.
+
+----------------------------------------------------------------------------
+I created 
+    kersync.h file in the include/linux file in the linux 
+        this includes an event structure
+    kersync.c is the file where the global spinlock_t list_lock
+        is defined for list of events
+
+----------------------------------------------------------------------------
+
+we have trouble wrting the init()function
+    where should we declare the global list_lock
+        if we put it in an *.c file and make it private, how can the init() 
+        function look at it and set it to 0?
+        else if we put it in a header file, a user space function can easily
+        include this header and modify this list_lock.
+    therefore we decided to putoff this quetions till we finishs. 
+    for the purpose of testing our method fast, we should just make it global 
+    in the kersync.c file and put it to the right place later on.
+
+----------------------------------------------------------------------------
+How to write a script to lunch the test QEMU
+----------------------------------------------------------------------------
+First is to set up the global list_lock
+    we put the kersync.h file in a file named kersync/ them created a Makefile
+    in the kersync/ directory.
+    this way the Makefile in ../ can undersatnd that we have kersync.h and kersync.c
+    in its child directory. 
+Second is to set up the event structure
+    The event structure is in the kersnyc.h header file
+
+----------------------------------------------------------------------------
+
+add "../kersnyc/kersync.h" to init/main.c file
+then we make the kernel to check
+
+add struct list_head *event_list to kersync.h this event_list pointer will work
+as the head of the list that linux is going to maintain for us. 
+    change this struct list_head  to
+    static LIST_HEAD(event_list)
+
+We are now going to test the link list.
+    list_add()
+    list_del()
+    event_t *f
+    struct list_head *p;
+    list_for_each(p, event_list){
+        f = list_entry(p,event_t,list)
+    }
+
+
+----------------------------------------------------------------------------
+move list_lock and link_list head from kersync.h to kersync.c file 
+add 
+    doevent_init() to /init/main.c @ line 574
+
+successfuly compile
+
+    ???How do we check that if we have successfuly add in our initial funciton?
+    how do we know that the global list_lock is really global to kernel??
+        There is a line when kernel boot shows "list_lock  initialized"
+
+----------------------------------------------------------------------------
+we decided to test the kernel maintained link list 
+once this is good, we can move on to add lock and modify other fancy things
+
+void wake_up(wait_queue_head_t *queue);
+void wake_up_interruptible(wait_queue_head_t *queue);
+
+void sleep_on(wait_queue_head_t *queue);
+void interruptible_sleep_on(wait_queue_head_t *queue);
+
+header for these file is linux/wait.h
+
+----------------------------------------------------------------------------
+blah has imcomplete type means compiler does not know where to look up 
+a data type.
+typically what happended is that you forgot to include a header.
+
+
+There should be not struct before the wait_queue_head_t struture.
+it should only be wait_queue_head_t
+
+BUG
+    init_waitqueue_head(&cnt_ent->Q);
+    this one was init_waitqueue_head(cnt_ent->pQ);
+    for some reason, I should not get the pointer of Q myself but has to 
+    let the init_waitqueue_head() function to get it for me.
+    //TODO
+        ???try to understand why I cannot pass in pointer pQ direclty
+
+after these two bugs our list is now successfully maintained by the linux
+operating system
+
+----------------------------------------------------------------------------
+BUG
+    in doevent_wait(event_id) we released event->e_lock before we add 
+    process into the event Queue. Say there is Jack doing this doevent_wait(event_id).
+    this is problematic because if there is someone, say Tom, calls the 
+    doevent_close(event_id)
+    then Tom will signal everyong in the Q (remember this moment Jack 
+    has not yet put himself in the event Q) and mark the Queue as invalid. 
+-----------------------------------------------------------------------------
+we add in n_sleep_event to the structure with the hope to keep track of 
+how many processes are waiting for the event. 
+when signal, we set it to 0.
+
+

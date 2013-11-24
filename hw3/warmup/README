@@ -1,0 +1,20 @@
+Source file:
+    warmup.c
+Executable:
+    t_switch
+
+To compile the file just use "make" at local directory.
+
+
+There are two pipes. One from parent to child let us name it p_to_c, the other from child to parent, let us name it c_to_p.
+The parent will write to p_to_c and read from c_to_p.
+The child will write to c_to_p and read from p_to_c. 
+
+First we spawn a thread using pthread_create();.
+
+Then we do multiple read and write to the pipe we take down the time as well. 
+Because we are doing multiple iterations here, we can take the start time and end time of all these iterations. 
+
+The error of the final answer will be reduced with the increasing of the iteration time. 
+
+

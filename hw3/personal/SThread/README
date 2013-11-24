@@ -1,0 +1,2 @@
+The size of the queue in the mutex is set to 25.
+This could be changed in the sync.h file 

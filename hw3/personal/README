@@ -1,0 +1,13 @@
+Personal:
+    personal/SThread
+        this directory has all my work
+        other directory are just backups
+            
+Usage:
+    make clean
+    make sample
+    ./sample
+
+sync.c:
+    Queue operations
+    
